@@ -1,0 +1,38 @@
+{
+	"name": "first-person-pickup-system",
+	"globIgnorePaths": ["**/*.md"],
+	"tree": {
+		"$className": "DataModel",
+
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+			"PickupSystem": {
+				"$path": "src/ReplicatedStorage/PickupSystem"
+			}
+		},
+
+		"ServerScriptService": {
+			"$className": "ServerScriptService",
+			"PickupServer": {
+				"$path": "src/ServerScriptService/PickupServer.server.luau"
+			}
+		},
+
+		"StarterPlayer": {
+			"$className": "StarterPlayer",
+			"StarterPlayerScripts": {
+				"$className": "StarterPlayerScripts",
+				"PickupClient": {
+					"$path": "src/StarterPlayer/StarterPlayerScripts/PickupClient.client.luau"
+				}
+			}
+		},
+
+		"Workspace": {
+			"$className": "Workspace",
+			"$properties": {
+				"FilteringEnabled": true
+			}
+		}
+	}
+}
