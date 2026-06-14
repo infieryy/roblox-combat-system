@@ -1,0 +1,18 @@
+# Rojo / Roblox build artifacts
+*.rbxl
+*.rbxlx
+*.rbxl.lock
+*.rbxlx.lock
+*.rbxm
+*.rbxmx
+
+# Tooling
+/.lune/
+/sourcemap.json
+/Packages/
+/ServerPackages/
+/DevPackages/
+
+# Editor
+.DS_Store
+.vscode/
