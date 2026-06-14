@@ -1,0 +1,39 @@
+{
+  "name": "roblox-combat-system",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Shared": {
+        "$path": "src/ReplicatedStorage/Shared"
+      },
+      "PickupSystem": {
+        "$path": "src/ReplicatedStorage/PickupSystem"
+      },
+      "Remotes": {
+        "$path": "src/ReplicatedStorage/Remotes"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "PickupSystem": {
+        "$path": "src/ServerScriptService/PickupSystem"
+      },
+      "init": {
+        "$path": "src/ServerScriptService/init.server.luau"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "PickupSystem": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/PickupSystem"
+        },
+        "init": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/init.client.luau"
+        }
+      }
+    }
+  }
+}
