@@ -1,0 +1,27 @@
+{
+  "name": "PickupSystem",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "PickupSystem": {
+        "$path": "src/ReplicatedStorage/PickupSystem"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "PickupSystem": {
+        "$path": "src/ServerScriptService/PickupSystem"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "PickupSystem": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/PickupSystem"
+        }
+      }
+    }
+  }
+}
