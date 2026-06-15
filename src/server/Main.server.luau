@@ -7,5 +7,8 @@
 ]]
 
 local PickupService = require(script.Parent:WaitForChild("PickupService"))
+local WeaponService = require(script.Parent:WaitForChild("WeaponService"))
 
 PickupService.start()
+-- Started after PickupService so the combat layer can query hold state safely.
+WeaponService.start()

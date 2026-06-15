@@ -102,6 +102,16 @@ local function isAlive(player: Player): boolean
 end
 
 ------------------------------------------------------------------
+-- Public queries
+------------------------------------------------------------------
+
+-- True while the player is currently carrying a picked-up object. Used by the
+-- combat layer (WeaponService) to forbid firing / equipping while dragging.
+function PickupService.isHolding(player: Player): boolean
+	return held[player] ~= nil
+end
+
+------------------------------------------------------------------
 -- Drop
 ------------------------------------------------------------------
 
