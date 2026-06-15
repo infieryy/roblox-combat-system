@@ -1,0 +1,22 @@
+# Roblox place/model files (never commit these — the repo is code-only)
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+
+# Rojo output
+*.rojo.json
+
+# Aftman / Foreman tool directories
+.aftman/
+.foreman/
+
+# OS artefacts
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+*.suo
+*.user
