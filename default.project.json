@@ -1,27 +1,24 @@
 {
-  "name": "FirstPersonPickupSystem",
+  "name": "RobloxCombatSystem",
   "tree": {
     "$className": "DataModel",
-
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
-      "Pickup": {
+      "Shared": {
         "$path": "src/shared"
       }
     },
-
     "ServerScriptService": {
       "$className": "ServerScriptService",
-      "Pickup": {
+      "Server": {
         "$path": "src/server"
       }
     },
-
     "StarterPlayer": {
       "$className": "StarterPlayer",
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",
-        "Pickup": {
+        "Client": {
           "$path": "src/client"
         }
       }
