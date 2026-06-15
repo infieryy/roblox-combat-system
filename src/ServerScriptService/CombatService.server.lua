@@ -57,7 +57,13 @@ local function isDraggable(part)
 end
 
 local function clearDrag(player)
+	local targetPart = activeDrags[player]
 	activeDrags[player] = nil
+	if targetPart and targetPart:IsA("BasePart") and targetPart:IsDescendantOf(Workspace) then
+		pcall(function()
+			targetPart:SetNetworkOwnershipAuto()
+		end)
+	end
 end
 
 local function getPlayerWeaponState(player)
