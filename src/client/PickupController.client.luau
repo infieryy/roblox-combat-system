@@ -29,6 +29,9 @@ local PhysicsUtil = require(Shared:WaitForChild("PhysicsUtil"))
 local Interactable = require(Shared:WaitForChild("Interactable"))
 
 local CameraController = require(script.Parent:WaitForChild("CameraController"))
+-- Drag-state bridge: lets the combat layer holster the weapon while a pickup is
+-- being held / inspected. The pickup system is the sole writer.
+local HoldState = require(script.Parent:WaitForChild("HoldState"))
 
 local LocalPlayer = Players.LocalPlayer
 
@@ -218,6 +221,7 @@ UserInputService.InputBegan:Connect(function(input: InputObject, gameProcessed: 
 	elseif input.KeyCode == Enum.KeyCode.R then
 		if hold then
 			CameraController.setRotateMode(true)
+			HoldState.setRotating(true)
 		end
 	end
 end)
@@ -225,6 +229,7 @@ end)
 UserInputService.InputEnded:Connect(function(input: InputObject)
 	if input.KeyCode == Enum.KeyCode.R then
 		CameraController.setRotateMode(false)
+		HoldState.setRotating(false)
 	end
 end)
 
@@ -255,6 +260,8 @@ remotes.PickupGranted.OnClientEvent:Connect(function(interactable: Instance, pri
 		alignOrientation = alignOrientation :: AlignOrientation,
 		holdDistance = PhysicsUtil.getHoldDistance(interactable),
 	}
+	-- Tell the combat layer to holster: you can't shoot while carrying an object.
+	HoldState.setHolding(true)
 end)
 
 remotes.DropGranted.OnClientEvent:Connect(function()
@@ -262,6 +269,8 @@ remotes.DropGranted.OnClientEvent:Connect(function()
 	currentTarget = nil
 	inspectRotation = CFrame.identity
 	CameraController.setRotateMode(false)
+	-- Hands are free again; the combat layer may re-equip.
+	HoldState.setHolding(false)
 end)
 
 ------------------------------------------------------------------
