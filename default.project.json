@@ -1,0 +1,21 @@
+{
+  "name": "roblox-combat-system",
+  "tree": {
+    "$className": "DataModel",
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "PickupServer": {
+        "$path": "src/ServerScriptService/PickupServer.server.luau"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "FirstPersonPickupClient": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/FirstPersonPickupClient.client.luau"
+        }
+      }
+    }
+  }
+}
