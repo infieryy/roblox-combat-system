@@ -13,6 +13,7 @@
 	  UnequipGranted  (server -> client) : confirm holstered
 	  FireRequest     (client -> server) : report a shot (origin, dirs, hits)
 	  FireResult      (server -> client) : authoritative ammo + accepted flag
+	  ReloadRequest   (client -> server) : ask to reload the equipped weapon
 	  HitConfirm      (server -> ALL)    : broadcast a confirmed hit for FX
 	  AmmoUpdate      (server -> client) : authoritative ammo after reload, etc.
 
@@ -32,6 +33,7 @@ local EVENT_NAMES = {
 	"UnequipGranted",
 	"FireRequest",
 	"FireResult",
+	"ReloadRequest",
 	"HitConfirm",
 	"AmmoUpdate",
 }
@@ -43,6 +45,7 @@ export type RemoteSet = {
 	UnequipGranted: RemoteEvent,
 	FireRequest: RemoteEvent,
 	FireResult: RemoteEvent,
+	ReloadRequest: RemoteEvent,
 	HitConfirm: RemoteEvent,
 	AmmoUpdate: RemoteEvent,
 }

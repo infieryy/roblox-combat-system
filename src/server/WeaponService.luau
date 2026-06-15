@@ -40,6 +40,7 @@ type LoadoutState = {
 	magazine: number,
 	reserve: number,
 	lastFire: number,
+	reloading: boolean,
 }
 
 local loadouts: { [Player]: LoadoutState } = {}
@@ -136,6 +137,7 @@ local function onEquipRequest(player: Player, weaponName: unknown)
 		magazine = def.MagazineSize,
 		reserve = def.ReserveAmmo,
 		lastFire = 0,
+		reloading = false,
 	}
 	loadouts[player] = state
 	remotes.EquipGranted:FireClient(player, weaponName, state.magazine, state.reserve)
@@ -171,6 +173,10 @@ local function onFireRequest(player: Player, weaponName: unknown, origin: unknow
 		return
 	end
 	if PickupService.isHolding(player) then
+		fireResult(player, false)
+		return
+	end
+	if state.reloading then
 		fireResult(player, false)
 		return
 	end
@@ -255,6 +261,42 @@ local function onFireRequest(player: Player, weaponName: unknown, origin: unknow
 end
 
 ------------------------------------------------------------------
+-- Reload (authoritative)
+------------------------------------------------------------------
+
+local function onReloadRequest(player: Player)
+	local state = loadouts[player]
+	if not state or state.reloading then
+		return
+	end
+	if not isAlive(player) then
+		return
+	end
+	if PickupService.isHolding(player) then
+		return
+	end
+	local def = state.def
+	if state.magazine >= def.MagazineSize or state.reserve <= 0 then
+		return
+	end
+
+	state.reloading = true
+
+	task.delay(def.ReloadTime, function()
+		-- The loadout may have changed (re-equip, death, disconnect) meanwhile.
+		if loadouts[player] ~= state or not state.reloading then
+			return
+		end
+		local needed = def.MagazineSize - state.magazine
+		local taken = math.min(needed, state.reserve)
+		state.magazine += taken
+		state.reserve -= taken
+		state.reloading = false
+		remotes.AmmoUpdate:FireClient(player, state.magazine, state.reserve)
+	end)
+end
+
+------------------------------------------------------------------
 -- Lifecycle
 ------------------------------------------------------------------
 
@@ -277,6 +319,7 @@ function WeaponService.start()
 		unequip(player, true)
 	end)
 	remotes.FireRequest.OnServerEvent:Connect(onFireRequest)
+	remotes.ReloadRequest.OnServerEvent:Connect(onReloadRequest)
 
 	Players.PlayerAdded:Connect(onPlayerAdded)
 	Players.PlayerRemoving:Connect(onPlayerRemoving)

@@ -86,14 +86,12 @@ export type WeaponConfigType = {
 	RangeTolerance: number, -- studs of leeway for latency
 
 	Weapons: { [string]: WeaponDefinition },
-
-	-- Helpers (defined below).
-	fireInterval: (weapon: WeaponDefinition) -> number,
-	get: (name: string) -> WeaponDefinition?,
-	weaponForSlot: (slot: number) -> string?,
 }
 
-local WeaponConfig: WeaponConfigType = {
+-- Left as an unsealed table literal (no direct type annotation) so the helper
+-- functions below can be attached to the same table. The exported types above
+-- (WeaponDefinition / ViewmodelPart / Vector3Like) are what consumers rely on.
+local WeaponConfig = {
 	IgnoreCollisionGroups = { "PickupCharacters", "PickupHeldObjects" },
 
 	ReloadKey = "R",

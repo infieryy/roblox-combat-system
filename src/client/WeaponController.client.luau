@@ -276,6 +276,9 @@ local function tryReload()
 	e.reloading = true
 	updateHud()
 
+	-- Ask the authoritative server to reload too; it replies with AmmoUpdate.
+	remotes.ReloadRequest:FireServer()
+
 	local def = e.def
 	task.delay(def.ReloadTime, function()
 		-- The equipped weapon may have changed during the reload.
