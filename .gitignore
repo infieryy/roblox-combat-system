@@ -1,0 +1,7 @@
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+*.log
+node_modules/
+dist/
