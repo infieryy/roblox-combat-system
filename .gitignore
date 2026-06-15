@@ -1,0 +1,7 @@
+# Rojo sync artifacts
+*.rbxlx
+*.rbxl
+
+# OS
+.DS_Store
+Thumbs.db
