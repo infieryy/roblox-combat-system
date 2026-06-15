@@ -44,13 +44,19 @@ local EVENT_NAMES = {
 
 local Remotes = {}
 
-function Remotes.build(): RemoteSet
-	local folder = ReplicatedStorage:FindFirstChild(Config.RemotesFolderName)
-	if not folder then
-		folder = Instance.new("Folder")
-		folder.Name = Config.RemotesFolderName
-		folder.Parent = ReplicatedStorage
+local function ensureFolder(): Folder
+	local existing = ReplicatedStorage:FindFirstChild(Config.RemotesFolderName)
+	if existing and existing:IsA("Folder") then
+		return existing
 	end
+	local folder = Instance.new("Folder")
+	folder.Name = Config.RemotesFolderName
+	folder.Parent = ReplicatedStorage
+	return folder
+end
+
+function Remotes.build(): RemoteSet
+	local folder = ensureFolder()
 
 	local handles: { [string]: RemoteEvent } = {}
 	for _, name in EVENT_NAMES do

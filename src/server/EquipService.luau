@@ -23,6 +23,7 @@ type EquipSession = {
 	welds: { Instance },
 	anchoredSnapshot: { [BasePart]: boolean },
 	canCollideSnapshot: { [BasePart]: boolean },
+	masslessSnapshot: { [BasePart]: boolean },
 }
 
 local EquipService = {}
@@ -93,9 +94,11 @@ local function attachToHand(player: Player, weapon: Instance, weaponId: string):
 
 	local anchoredSnapshot: { [BasePart]: boolean } = {}
 	local canCollideSnapshot: { [BasePart]: boolean } = {}
+	local masslessSnapshot: { [BasePart]: boolean } = {}
 	for _, part in GeometryUtil.getParts(weapon) do
 		anchoredSnapshot[part] = part.Anchored
 		canCollideSnapshot[part] = part.CanCollide
+		masslessSnapshot[part] = part.Massless
 		part.Anchored = false
 		part.CanCollide = false
 		part.Massless = true
@@ -143,6 +146,7 @@ local function attachToHand(player: Player, weapon: Instance, weaponId: string):
 		welds = welds,
 		anchoredSnapshot = anchoredSnapshot,
 		canCollideSnapshot = canCollideSnapshot,
+		masslessSnapshot = masslessSnapshot,
 	}
 end
 
@@ -168,6 +172,11 @@ local function detach(player: Player): boolean
 	for part, canCollide in session.canCollideSnapshot do
 		if part and part.Parent then
 			part.CanCollide = canCollide
+		end
+	end
+	for part, massless in session.masslessSnapshot do
+		if part and part.Parent then
+			part.Massless = massless
 		end
 	end
 
