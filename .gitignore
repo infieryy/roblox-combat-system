@@ -1,0 +1,15 @@
+# Roblox place files (source of truth is this repo, not place files)
+*.rbxlx
+*.rbxl
+*.rbxm
+*.rbxmx
+
+# Rojo build output
+build/
+
+# Tool binaries (managed via aftman.toml)
+.bin/
+
+# OS artefacts
+.DS_Store
+Thumbs.db
