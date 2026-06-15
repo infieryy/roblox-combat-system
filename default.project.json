@@ -1,0 +1,27 @@
+{
+  "name": "roblox-combat-system",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Combat": {
+        "$path": "src/ReplicatedStorage/Combat"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "Combat": {
+        "$path": "src/ServerScriptService/Combat"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "Combat": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/Combat"
+        }
+      }
+    }
+  }
+}
