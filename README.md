@@ -42,18 +42,24 @@ mapped into the DataModel by `default.project.json`:
 ```
 src/
 ├── shared/        ->  ReplicatedStorage/PickupSystem   (shared modules)
-│   ├── Config.luau          -- every tunable value, one source of truth
-│   ├── Remotes.luau         -- creates / waits for the RemoteEvents
+│   ├── Config.luau          -- pickup tunables, one source of truth
+│   ├── Remotes.luau         -- pickup RemoteEvents
 │   ├── Interactable.luau    -- shared "is this pickup-able?" logic
-│   └── PhysicsUtil.luau     -- *** the reusable physics utility module ***
+│   ├── PhysicsUtil.luau     -- *** the reusable physics utility module ***
+│   ├── WeaponConfig.luau    -- combat tunables + weapon definitions (NEW)
+│   └── WeaponRemotes.luau   -- combat RemoteEvents (NEW)
 │
 ├── server/        ->  ServerScriptService/PickupSystem
-│   ├── Main.server.luau     -- Script: thin entry point
-│   └── PickupService.luau   -- ModuleScript: all authoritative logic
+│   ├── Main.server.luau     -- Script: boots PickupService + WeaponService
+│   ├── PickupService.luau   -- ModuleScript: authoritative pickup logic
+│   └── WeaponService.luau   -- ModuleScript: authoritative combat logic (NEW)
 │
 └── client/        ->  StarterPlayer/StarterPlayerScripts/PickupSystem
     ├── PickupController.client.luau  -- LocalScript: raycast, input, HUD, hold
-    └── CameraController.luau          -- ModuleScript: custom FP camera
+    ├── CameraController.luau          -- ModuleScript: custom FP camera
+    ├── HoldState.luau                 -- ModuleScript: drag<->combat bridge (NEW)
+    ├── ViewmodelController.luau       -- ModuleScript: first-person weapon model (NEW)
+    └── WeaponController.client.luau   -- LocalScript: equip/fire/reload + HUD (NEW)
 ```
 
 | Requirement                       | Where it lives                                  |
@@ -101,11 +107,41 @@ src/
 
 ## Controls
 
-| Input            | Action                                   |
-| ---------------- | ---------------------------------------- |
-| Mouse            | Look around (first person)               |
-| **E**            | Pick up the targeted object / drop it    |
-| **Hold R** + Mouse | Rotate (inspect) the held object       |
+| Input              | Action                                   |
+| ------------------ | ---------------------------------------- |
+| Mouse              | Look around (first person)               |
+| **E**              | Pick up the targeted object / drop it    |
+| **Hold R** + Mouse | Rotate (inspect) the held object         |
+| **1 / 2 / 3**      | Equip Pistol / Rifle / Shotgun           |
+| **Left Mouse**     | Fire the equipped weapon                 |
+| **R**              | Reload (when a weapon is equipped)       |
+| **H**              | Holster the equipped weapon              |
+
+> **R** is context-sensitive: it rotates a held object while you are carrying
+> one, and reloads otherwise. The two never overlap because weapons are
+> auto-holstered while dragging.
+
+---
+
+## Combat layer (Viewmodel + Weapons)
+
+A first-person weapon system layered on top of the pickup system and wired into
+the **same** scriptable camera, so the two share one coherent first-person view.
+
+- **Procedural viewmodel.** `ViewmodelController` builds the held weapon entirely
+  from `WeaponConfig` part definitions (no Studio assets) and pins it to the
+  camera each render frame, with idle/walk bob, turn sway and recoil kick.
+- **Server-authoritative combat.** The client only sends `{ weapon, origin,
+  directions }`; `WeaponService` enforces fire-rate, ammo, and an origin-near-head
+  check, then does its **own** raycast and damage from `WeaponConfig` — the client
+  can never dictate hits or damage. Ammo (including reload) is reconciled from the
+  server.
+- **Clean coupling with dragging.** `PickupController` publishes its hold/inspect
+  state through `HoldState`; the combat layer reads it to holster the weapon while
+  you carry an object and re-equip it when you drop. The server mirrors this by
+  refusing to fire/equip while `PickupService.isHolding(player)` is true.
+- **Add or tune weapons** purely in `src/shared/WeaponConfig.luau` (damage,
+  fire-rate, spread, pellets, ammo, viewmodel geometry, feel).
 
 ---
 
